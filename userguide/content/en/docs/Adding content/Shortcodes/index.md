@@ -288,6 +288,21 @@ description: Reference for the Pet Store API
 
 You can customize Swagger UI's look and feel by overriding Swagger's CSS or by editing and compiling a [Swagger UI dist](https://github.com/swagger-api/swagger-ui) yourself and replace `themes/docsy/static/css/swagger-ui.css`.
 
+### redoc
+
+The `redoc` shortcode uses the open-source [Redoc](https://github.com/Redocly/redoc) tool to render reference API documentation from an OpenAPI YAML or JSON file. This can be hosted anywhere you like, for example in your site's root [`/static` folder](/docs/adding-content/content/#adding-static-content), but you can use a URL as well, for example:
+
+```yaml
+---
+title: "Pet Store API"
+type: docs
+weight: 1
+description: Reference for the Pet Store API
+---
+
+{{</* redoc "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v2.0/yaml/petstore.yaml" */>}}
+```
+
 ### iframe
 
 With this shortcode you can embed external content into a Docsy page as an inline frame (`iframe`) - see: https://www.w3schools.com/tags/tag_iframe.asp
@@ -662,3 +677,17 @@ starting with `/`. The root directory is the `/content` folder.
 | code | false | Boolean value. If `true` the contents is treated as code|
 | lang | plain text | Programming language |
 
+## Conditional text
+
+The `conditional-text` shortcode allows you to show or hide parts of your content depending on the value of the `buildCondition` parameter set in your configuration file. This can be useful if you are generating different builds from the same source, for example, using a different product name. This shortcode helps you handle the minor differences between these builds.
+
+```text
+{{%/* conditional-text include-if="foo" */%}}
+This text appears in the output only if `buildCondition = "foo" is set in your config file`.
+{{%/* /conditional-text */%}}
+{{%/* conditional-text exclude-if="bar" */%}}
+This text does not appear in the output if `buildCondition = "bar" is set in your config file`.
+{{%/* /conditional-text */%}}
+```
+
+If you are using this shortcode, note that when evaluating the conditions, substring matches are matches as well. That means, if you set `include-if="foobar"`, and `buildcondition = "foo"`, you have a match!
